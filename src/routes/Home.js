@@ -1,4 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { dbService } from "../firebase";
+import Message from "../components/Message";
+import MessageForm from "../components/MessageForm";
 
-const Home = () => <span>Home</span>;
+const Home = ({ user }) => {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    dbService.collection("message").onSnapshot((snapshot) => {
+      const gotMessages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(gotMessages);
+    });
+  }, []);
+
+  return (
+    <div>
+      <MessageForm user={user} />
+      <div>
+        {messages.map((message) => (
+          <Message
+            key={message.id}
+            message={message}
+            isOwner={user.uid === message.writer_id}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default Home;
