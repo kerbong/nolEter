@@ -17,9 +17,9 @@ const Home = ({ user }) => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <MessageForm user={user} />
-      <div>
+      <div style={{ marginTop: 30 }}>
         {messages.map((message) => (
           <Message
             key={message.id}

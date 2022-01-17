@@ -48,22 +48,36 @@ const Profile = ({ refreshUser, user }) => {
   };
 
   return (
-    <>
-      <span>{user.displayName ? user.displayName : user.email}'s Profile</span>
-      <form onSubmit={onSubmit}>
+    <div className="container">
+      <div style={{ marginBottom: "20px" }}>
+        {user.displayName ? user.displayName : user.email}님 닉네임
+        변경하실래요?
+      </div>
+      <form onSubmit={onSubmit} className="profileForm">
         <input
           value={newDisplayName}
           onChange={onChange}
           type="text"
+          autoFocus
+          className="formInput"
           placeholder="닉네임을 입력해주세요."
         />
-        <input type="submit" value="변경" />
+        <input
+          type="submit"
+          value="업데이트"
+          className="formBtn"
+          style={{
+            marginTop: 10,
+          }}
+        />
       </form>
       {messages.map((message) => (
         <Message key={message.id} message={message} isOwner={true} />
       ))}
-      <button onClick={onLogOutClick}>Log out</button>
-    </>
+      <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+        Log Out
+      </span>
+    </div>
   );
 };
 

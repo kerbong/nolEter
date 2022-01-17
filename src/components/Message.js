@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { dbService, storageService } from "../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Message = ({ message, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -28,33 +30,46 @@ const Message = ({ message, isOwner }) => {
   };
 
   return (
-    <>
+    <div className="nweet">
       {editing ? (
         <>
-          <br></br>
-          <input onChange={onChange} type="text" placeholder={message.text} />
-          <input type="submit" value="Update" onClick={onUpdateClick} />
-          <button onClick={onEditClick}>Cancel</button>
+          <form onSubmit={onUpdateClick} className="container nweetEdit">
+            <br></br>
+            <input onChange={onChange} type="text" placeholder={message.text} />
+            <input type="submit" value="Update" className="formBtn" />
+          </form>
+          <span onClick={onEditClick} className="formBtn cancelBtn">
+            Cancel
+          </span>
         </>
       ) : (
         <div>
-          <br />
-          {message.pictureUrl && (
-            <img alt="" src={message.pictureUrl} height="50px" width="50px" />
+          {message.pictureUrl ? (
+            <div style={{ marginLeft: "60px", marginTop: "15px" }}>
+              <h4>{message.text}</h4>
+            </div>
+          ) : (
+            <h4>{message.text}</h4>
           )}
-          <span>{message.text}</span>
-          <span> by {message.writer}</span>
+          <br />
+
+          {message.pictureUrl && <img alt="" src={message.pictureUrl} />}
+
           <br />
           {isOwner && (
-            <>
-              <button onClick={onEditClick}>✒ Edit</button>
-              <button onClick={onDeleteClick}>❌ Delete</button>
-            </>
+            <div className="nweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={onEditClick}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
           <br />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

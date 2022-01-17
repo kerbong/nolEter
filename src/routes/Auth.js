@@ -1,4 +1,10 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTwitter,
+  faGoogle,
+  faGithub,
+} from "@fortawesome/free-brands-svg-icons";
 import { authService, firebaseInstance } from "../firebase";
 import AuthForm from "../components/AuthForm";
 
@@ -19,14 +25,20 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <div className="authContainer">
+      <FontAwesomeIcon
+        icon={faTwitter}
+        color={"#04AAFF"}
+        size="3x"
+        style={{ marginBottom: 30 }}
+      />
       <AuthForm />
-      <div>
-        <button name="google" onClick={socialLogin}>
-          Continue with Google
+      <div className="authBtns">
+        <button onClick={socialLogin} name="google" className="authBtn">
+          Continue with Google <FontAwesomeIcon icon={faGoogle} />
         </button>
-        <button name="facebook" onClick={socialLogin}>
-          Continue with FaceBook
+        <button onClick={socialLogin} name="github" className="authBtn">
+          Continue with Github <FontAwesomeIcon icon={faGithub} />
         </button>
       </div>
     </div>

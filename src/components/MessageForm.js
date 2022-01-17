@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { storageService, dbService } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const MessageForm = ({ user }) => {
   const [message, setMessage] = useState("");
   const [picture, setPicture] = useState();
 
   const onSubmit = async (event) => {
+    if (message === "") {
+      return;
+    }
     event.preventDefault();
     let pictureUrl = "";
     if (picture) {
@@ -48,27 +53,51 @@ const MessageForm = ({ user }) => {
   };
 
   const onPictureClick = () => {
-    setPicture(null);
+    setPicture("");
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="factoryForm">
+      <div className="factoryInput__container">
+        <input
+          onChange={onChange}
+          value={message}
+          type="text"
+          placeholder="지금 내가 하고 싶은 말은...?"
+          maxLength={120}
+          autoFocus
+          style={{ marginLeft: "30px", color: "gray" }}
+        />
+        <input type="submit" value="&rarr;" className="factoryInput__arrow" />
+      </div>
+      <label htmlFor="attach-file" className="factoryInput__label">
+        <span>Add photos</span>
+        <FontAwesomeIcon icon={faPlus} />
+      </label>
       <input
-        onChange={onChange}
-        value={message}
-        type="text"
-        placeholder="지금 내 마음은...?"
-        maxLength={120}
+        id="attach-file"
+        onChange={onFileChange}
+        type="file"
+        accept="image/*"
+        style={{
+          opacity: 0,
+        }}
       />
-      <input onChange={onFileChange} type="file" accept="image/*" />
       {picture && (
-        <div>
-          <img alt="" width="80px" height="80px" src={picture} />
-          <button onClick={onPictureClick}>지우기</button>
+        <div className="factoryForm__attachment">
+          <img
+            alt=""
+            src={picture}
+            style={{
+              backgroundImage: picture,
+            }}
+          />
+          <div className="factoryForm__clear" onClick={onPictureClick}>
+            <span>Remove</span>
+            <FontAwesomeIcon icon={faTimes} />
+          </div>
         </div>
       )}
-
-      <input type="submit" value="올려줘" />
     </form>
   );
 };
